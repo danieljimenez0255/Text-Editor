@@ -10,9 +10,7 @@
  * HINT: Use the onkeydown function inside HTML
  */
 
-
 window.onload = () => {
-
   let updatedText = updateText();
   document.getElementById("bold").addEventListener("click", () => {
     removeActive();
@@ -27,7 +25,7 @@ window.onload = () => {
     makeUnderline(updatedText);
   });
   document.getElementById("translateText").addEventListener("click", () => {
-    quickStart();
+    // quickStart();
   });
   document.getElementById("left-align").addEventListener("click", () => {
     removeActive();
@@ -43,16 +41,20 @@ window.onload = () => {
   });
 };
 
+let boldCount = 0,
+  italicCount = 0,
+  underlineCount = 0;
+(count1 = 0), (count2 = 0), (count3 = 0);
+
 function updateText() {
   // CODE GOES HERE
   //adds keydown event to detect key clicks
 
   document.getElementById("text-input").addEventListener("keydown", (event) => {
-    //formatted text field only will show letters, not other special characters
-    let s;
-    if (event.keyCode >= 65 && event.keyCode <= 90 || event.keyCode ===  32) {
-     return  document.getElementById("text-output").innerHTML += event.key
 
+    //formatted text field only will show letters, not other special characters
+    if ((event.keyCode >= 65 && event.keyCode <= 90) || event.keyCode === 32) {
+      return (document.getElementById("text-output").innerText += event.key);
     } else {
       return;
     }
@@ -68,17 +70,21 @@ function updateText() {
  * HINT: Toggle .active class for the button
  */
 function makeBold(elem) {
+  boldCount++;
   //CODE GOES HERE
- document.getElementById("bold").classList.add("active");
-  return (document.getElementById("text-output").style.fontWeight = "700");
+  document.getElementById("bold").classList.add("active");
+  document.getElementById("text-output").style.fontWeight = "700";
+  removeSty();
 }
 
 /**
  * Toggle the italic class for the output text
  */
 function makeItalic(elem) {
+  italicCount++;
   document.getElementById("italic").classList.add("active");
-  return (document.getElementById("text-output").style.fontStyle = "italic");
+  document.getElementById("text-output").style.fontStyle = "italic";
+  removeSty();
 }
 
 /**
@@ -89,10 +95,11 @@ function makeItalic(elem) {
  */
 function makeUnderline(elem) {
   //CODE GOES HERE
-
+  underlineCount++;
+  console.log(underlineCount);
   document.getElementById("underline").classList.add("active");
-  return (document.getElementById("text-output").style.textDecoration =
-    "underline");
+  document.getElementById("text-output").style.textDecoration = "underline";
+  removeSty();
 }
 
 /**
@@ -101,18 +108,25 @@ function makeUnderline(elem) {
  * HINT: Use the style property of the element
  * HINT: Make sure to untoggle the active state for all other align buttons
  */
+
 function alignText(elem, alignType) {
   // CODE GOES HERE
   let style = document.getElementById("text-output");
   if (alignType == "align-left") {
+    count1++;
     document.getElementById("left-align").classList.add("active");
     style.style.textAlign = "left";
+    removeSty();
   } else if (alignType == "align-right") {
+    count2++;
     document.getElementById("right-align").classList.add("active");
     style.style.textAlign = "right";
+    removeSty();
   } else {
+    count3++;
     document.getElementById("center-align").classList.add("active");
     style.style.textAlign = "center";
+    removeSty();
   }
   return style;
 }
@@ -120,10 +134,30 @@ function alignText(elem, alignType) {
 //removes active classes from elements when another is invoked
 const removeActive = () => {
   let buttonsClasses = document.getElementsByTagName("button");
-  for(let button of buttonsClasses){
-    if(button.classList.contains("active") == true){
+  for (let button of buttonsClasses) {
+    if (button.classList.contains("active") == true) {
       button.classList.remove("active");
     }
   }
-}
+};
 
+function removeSty() {
+  // console.log(count);
+  if (
+    count1 === 2 ||
+    count2 === 2 ||
+    count3 === 2 ||
+    boldCount === 2 ||
+    italicCount === 2 ||
+    underlineCount === 2
+  ) {
+    document.getElementById("text-output").removeAttribute("style");
+    removeActive();
+    (count1 = 0),
+      (count2 = 0),
+      (count3 = 0),
+      (boldCount = 0),
+      (italicCount = 0),
+      (underlineCount = 0);
+  }
+}
